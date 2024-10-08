@@ -16,12 +16,14 @@ import { Ghost } from 'lucide-react';
 import { CirclePlus } from 'lucide-react';
 import { Invoices } from '@/db/schema';
 import { db } from '@/db';
+import Container from '@/components/Container';
   
 const page = async () => {
   const results = await db.select().from(Invoices)
   console.log(results)
   return (
-    <main className="flex flex-col justify-center  h-full text-center gap-6 max-w-5xl mx-auto my-12">  
+    <main className=" h-full  my-12">  
+    <Container>
     {/* max-w-5xl or w-3/4 i also tried is used for centering the table in large screen  
     2) asChild allows us to have things in same left right line (NEW THING)*/}
     <div className="flex justify-between">
@@ -77,6 +79,7 @@ const page = async () => {
    
   </TableBody>
 </Table>
+</Container>
 </main>
   )
 }
