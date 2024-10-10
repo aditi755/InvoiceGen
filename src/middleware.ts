@@ -7,7 +7,9 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 // ])
 
 const isPublic = createRouteMatcher([
-    '/'
+    '/',
+    '/sign-in(.*)',
+    '/sign-up(.*)'
 ])
 
 //checker to see if the route is protected means the user is authenticated to access it

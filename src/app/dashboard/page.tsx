@@ -17,10 +17,20 @@ import { CirclePlus } from 'lucide-react';
 import { Invoices } from '@/db/schema';
 import { db } from '@/db';
 import Container from '@/components/Container';
+import { auth } from '@clerk/nextjs/server';
+import { eq } from 'drizzle-orm';
   
 const page = async () => {
-  const results = await db.select().from(Invoices)
+  const {userId} = auth();
+
+  if(!userId) {
+    return;
+  }
+
+  const results = await db.select().from(Invoices).where(eq(Invoices.userId, userId));
+  
   console.log(results)
+
   return (
     <main className=" h-full  my-12">  
     <Container>
