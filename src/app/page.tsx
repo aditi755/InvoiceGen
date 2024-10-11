@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 export default function Home() {
   return (
-    <main className="flex justify-center items-center h-screen w-full">
+    <main className="flex justify-center items-center w-full">
     <div className="flex flex-col gap-4">
     <h1 className="text-4xl font-bold">Invoicepedia</h1>
     <Button className="w-28 mx-auto">

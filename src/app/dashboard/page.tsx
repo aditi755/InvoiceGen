@@ -32,7 +32,7 @@ const page = async () => {
   console.log(results)
 
   return (
-    <main className=" h-full  my-12">  
+    <main className="h-full  my-12">  
     <Container>
     {/* max-w-5xl or w-3/4 i also tried is used for centering the table in large screen  
     2) asChild allows us to have things in same left right line (NEW THING)*/}

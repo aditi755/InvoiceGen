@@ -1,6 +1,6 @@
+
+
 import React from 'react'
-import Image from "next/image"
-import Link from "next/link";
 import { db } from '@/db';
 import { Invoices } from '@/db/schema';
 import { eq, and } from 'drizzle-orm';
@@ -15,6 +15,9 @@ import {
 import { Button } from '@/components/ui/button';
 import { ChevronDown } from 'lucide-react';
 import { AVAILABLE_STATUSES } from '@/data/invoice';
+import { updateStatusAction } from '@/app/actions';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
 async function InvoicePage({params}: {params: {invoiceId: string}}) {
   const {userId} = auth();
@@ -44,7 +47,20 @@ async function InvoicePage({params}: {params: {invoiceId: string}}) {
   
   return (
     <main className="flex flex-col justify-center  h-full text-center gap-6 max-w-5xl mx-auto my-12">  
-    
+     <h1 className="flex items-center gap-4 text-3xl font-semibold">
+            Invoice {invoiceId}
+            <Badge
+              className={cn(
+                "rounded-full capitalize",
+                result.status === "open" && "bg-blue-500",
+                result.status === "paid" && "bg-green-600",
+                result.status === "void" && "bg-zinc-700",
+                result.status === "uncollectible" && "bg-red-600",
+              )}
+            >
+              {result.status}
+            </Badge>
+          </h1>
     <div className="flex flex-col justify-between">
       <h1 className="text-3xl font-semibold">Invoices</h1>
      <h2>Billing Details</h2>
@@ -75,11 +91,16 @@ async function InvoicePage({params}: {params: {invoiceId: string}}) {
                 {AVAILABLE_STATUSES.map((status) => {
                   return (
                     <DropdownMenuItem key={status.id}>
-                      <form>
-                        {/* <input type="hidden" name="id" value={invoice.id} /> */}
+                      {/* <form 
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        const formData = new FormData(e.currentTarget);
+                        updateStatusAction(formData);
+                      }}> */}
+                        <input type="hidden" name="id" value={invoiceId} />
                         <input type="hidden" name="status" value={status.id} />
                         <button type="submit">{status.label}</button>
-                      </form>
+                      {/* </form> */}
                     </DropdownMenuItem>
                   );
                 })}
@@ -93,5 +114,5 @@ async function InvoicePage({params}: {params: {invoiceId: string}}) {
 </main>
   )
 }
-
 export default InvoicePage
+
