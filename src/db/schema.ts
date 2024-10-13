@@ -27,7 +27,8 @@ import { AVAILABLE_STATUSES } from "@/data/invoice";
    description: text("description").notNull(),
    userId: text("userId").notNull(),
    customerId: integer("customerId").notNull().references(() => Customers.id),
-   status: statusEnum("status").default("open").notNull()
+   status: statusEnum("status").default("open").notNull(),
+   organizationId: text("organizationId"),
  });
 
  export const Customers = pgTable("customers", {
@@ -35,6 +36,7 @@ import { AVAILABLE_STATUSES } from "@/data/invoice";
   createTs: timestamp("createTs").defaultNow().notNull(),
   name: text("name").notNull(),
   email: text("email").notNull(),
-  userId: text("userId").notNull()
+  userId: text("userId").notNull(),
+  organizationId: text("organizationId"),
 });
  

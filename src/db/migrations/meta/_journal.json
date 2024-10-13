@@ -43,6 +43,13 @@
       "when": 1728749046261,
       "tag": "0005_regular_bullseye",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1728833963770,
+      "tag": "0006_broken_mystique",
+      "breakpoints": true
     }
   ]
 }

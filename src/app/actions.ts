@@ -4,11 +4,11 @@ import { Customers, Invoices, Status } from "@/db/schema";
 import { db } from "@/db";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
-import { and, eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 export async function createAction(formData: FormData) {
-  const { userId } = auth();
+  const { userId, orgId } = auth();
   if (!userId) {
     throw new Error("User not authenticated");
   }
@@ -31,12 +31,12 @@ export async function createAction(formData: FormData) {
         name,
         email,
         userId,
-        value, // Add this line if 'value' is required in the Customers table
+        organizationId: orgId || null,
       })
       .returning({
         id: Customers.id
       });
-    
+
     const [invoice] = await db
       .insert(Invoices)
       .values({
@@ -45,6 +45,7 @@ export async function createAction(formData: FormData) {
         userId,
         customerId: customer.id,
         status: "open",
+        organizationId: orgId || null,
       })
       .returning({
         id: Invoices.id,
@@ -57,44 +58,120 @@ export async function createAction(formData: FormData) {
   }
 }
 
+
 export async function updateStatusAction(formData: FormData) {
-  const { userId } = auth();
+  const { userId, orgId } = auth();
+
+  // Updating disabled for demo
+  if ( userId !== process.env.ME_ID ) return;
 
   if (!userId) {
     return;
   }
 
-  const id = formData.get('id') as string;
-  const status = formData.get('status') as Status;
-    
-  const results = await db.update(Invoices)
-    .set({ status })
-    .where(and(
-      eq(Invoices.id, parseInt(id)),
-      eq(Invoices.userId, userId)
-    ))
+  const id = formData.get("id") as string;
+  const status = formData.get("status") as Status;
 
-  revalidatePath(`/invoices/${id}`, 'page')
+  if (orgId) {
+    await db
+      .update(Invoices)
+      .set({ status })
+      .where(
+        and(
+          eq(Invoices.id, Number.parseInt(id)),
+          eq(Invoices.organizationId, orgId),
+        ),
+      );
+  } else {
+    await db
+      .update(Invoices)
+      .set({ status })
+      .where(
+        and(
+          eq(Invoices.id, Number.parseInt(id)),
+          eq(Invoices.userId, userId),
+          isNull(Invoices.organizationId),
+        ),
+      );
+  }
 
-  console.log(results)
+  revalidatePath(`/invoices/${id}`, "page");
 }
 
 export async function deleteInvoiceAction(formData: FormData) {
-  const { userId } = auth();
+  const { userId, orgId } = auth();
+
+  // Deleting disabled for demo
+  if ( userId !== process.env.ME_ID ) return;
 
   if (!userId) {
     return;
   }
 
-  const id = formData.get('id') as string;
-    
-  const results = await db.delete(Invoices)
-    .where(and(
-      eq(Invoices.id, parseInt(id)),
-      eq(Invoices.userId, userId)
-    ))
+  const id = formData.get("id") as string;
 
-  redirect('/dashboard')
+  if (orgId) {
+    await db
+      .delete(Invoices)
+      .where(
+        and(
+          eq(Invoices.id, Number.parseInt(id)),
+          eq(Invoices.organizationId, orgId),
+        ),
+      );
+  } else {
+    await db
+      .delete(Invoices)
+      .where(
+        and(
+          eq(Invoices.id, Number.parseInt(id)),
+          eq(Invoices.userId, userId),
+          isNull(Invoices.organizationId),
+        ),
+      );
+  }
 
-  console.log(results)
+  redirect("/dashboard");
 }
+
+// export async function updateStatusAction(formData: FormData) {
+//   const { userId } = auth();
+
+//   if (!userId) {
+//     return;
+//   }
+
+//   const id = formData.get('id') as string;
+//   const status = formData.get('status') as Status;
+    
+//   const results = await db.update(Invoices)
+//     .set({ status })
+//     .where(and(
+//       eq(Invoices.id, parseInt(id)),
+//       eq(Invoices.userId, userId)
+//     ))
+
+//   revalidatePath(`/invoices/${id}`, 'page')
+
+//   console.log(results)
+// }
+
+// export async function deleteInvoiceAction(formData: FormData) {
+//   const { userId } = auth();
+
+//   if (!userId) {
+//     return;
+//   }
+
+//   const id = formData.get('id') as string;
+    
+//   const results = await db.delete(Invoices)
+//     .where(and(
+//       eq(Invoices.id, parseInt(id)),
+//       eq(Invoices.userId, userId)
+//     ))
+
+//   redirect('/dashboard')
+
+//   console.log(results)
+// }
