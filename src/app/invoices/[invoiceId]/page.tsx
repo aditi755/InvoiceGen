@@ -1,6 +1,6 @@
 import React from 'react'
 import { db } from '@/db';
-import { Invoices } from '@/db/schema';
+import { Customers, Invoices } from '@/db/schema';
 import { eq, and } from 'drizzle-orm';
 import { notFound } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
@@ -13,14 +13,28 @@ async function getInvoiceData(invoiceId: number) {
     return null;
   }
 
-  const [result] = await db.select().from(Invoices).where(
-    and(
-      eq(Invoices.id, invoiceId),
-      eq(Invoices.userId, userId)
-    )
-  ).limit(1);
+  const [result] = await db.select({
+    invoice: Invoices,
+    customerName: Customers.name,
+    customerEmail: Customers.email,
+  }).from(Invoices)
+    .innerJoin(Customers, eq(Invoices.customerId, Customers.id))
+    .where(
+      and(
+        eq(Invoices.id, invoiceId),
+        eq(Invoices.userId, userId)
+      )
+    ).limit(1);
 
-  return result;
+  if (!result) return null;
+
+  return {
+    ...result.invoice,
+    customer: {
+      name: result.customerName,
+      email: result.customerEmail,
+    }
+  };
 }
 
 export default async function InvoicePage({ params }: { params: { invoiceId: string } }) {

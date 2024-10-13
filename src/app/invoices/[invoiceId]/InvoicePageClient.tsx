@@ -24,12 +24,16 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 
-// Add this interface above the component or in a separate types file
+// Update the interface
 interface InvoiceData {
   id: number;
   status: string;
   value: number;
   description: string;
+  customer: {
+    name: string;
+    email: string;
+  };
 }
 
 function InvoicePageClient({ invoiceData }: { invoiceData: InvoiceData }) {
@@ -66,6 +70,8 @@ function InvoicePageClient({ invoiceData }: { invoiceData: InvoiceData }) {
       <div className="flex flex-col justify-between">
         <h2>Billing Details</h2>
         <div>
+          <p>Customer: {invoiceData.customer.name}</p>
+          <p>Email: {invoiceData.customer.email}</p>
           <p>Value: ${invoiceData.value / 100}</p>
           <p>Description: {invoiceData.description}</p>
         </div>
