@@ -63,17 +63,20 @@ export async function updateStatusAction(formData: FormData) {
   const { userId, orgId } = auth();
 
   // Updating disabled for demo
-  if ( userId !== process.env.ME_ID ) return;
+  // if (userId !== process.env.ME_ID) return;
 
   if (!userId) {
+    console.error("User not authenticated");
     return;
   }
 
   const id = formData.get("id") as string;
   const status = formData.get("status") as Status;
 
+  console.log(`Updating invoice ${id} to status ${status}`);
+
   if (orgId) {
-    await db
+    const result = await db
       .update(Invoices)
       .set({ status })
       .where(
@@ -82,8 +85,10 @@ export async function updateStatusAction(formData: FormData) {
           eq(Invoices.organizationId, orgId),
         ),
       );
+
+    console.log(`Update result: ${result}`);
   } else {
-    await db
+    const result = await db
       .update(Invoices)
       .set({ status })
       .where(
@@ -93,6 +98,8 @@ export async function updateStatusAction(formData: FormData) {
           isNull(Invoices.organizationId),
         ),
       );
+
+    console.log(`Update result: ${result}`);
   }
 
   revalidatePath(`/invoices/${id}`, "page");
@@ -102,16 +109,19 @@ export async function deleteInvoiceAction(formData: FormData) {
   const { userId, orgId } = auth();
 
   // Deleting disabled for demo
-  if ( userId !== process.env.ME_ID ) return;
+  // if (userId !== process.env.ME_ID) return;
 
   if (!userId) {
+    console.error("User not authenticated");
     return;
   }
 
   const id = formData.get("id") as string;
 
+  console.log(`Deleting invoice ${id}`);
+
   if (orgId) {
-    await db
+    const result = await db
       .delete(Invoices)
       .where(
         and(
@@ -119,8 +129,10 @@ export async function deleteInvoiceAction(formData: FormData) {
           eq(Invoices.organizationId, orgId),
         ),
       );
+
+    console.log(`Delete result: ${result}`);
   } else {
-    await db
+    const result = await db
       .delete(Invoices)
       .where(
         and(
@@ -129,6 +141,8 @@ export async function deleteInvoiceAction(formData: FormData) {
           isNull(Invoices.organizationId),
         ),
       );
+
+    console.log(`Delete result: ${result}`);
   }
 
   redirect("/dashboard");

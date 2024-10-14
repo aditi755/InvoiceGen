@@ -17,7 +17,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from '@/components/ui/button';
-import { ChevronDown, CreditCard, Ellipsis, Trash2 } from "lucide-react";
+import { ChevronDown, Trash2 } from "lucide-react";
 import { AVAILABLE_STATUSES } from '@/data/invoice';
 import { updateStatusAction, deleteInvoiceAction } from '@/app/actions';
 import { Badge } from '@/components/ui/badge';
@@ -118,9 +118,9 @@ function InvoicePageClient({ invoiceData }: { invoiceData: InvoiceData }) {
                 className="flex justify-center"
                 onSubmit={async (e) => {
                   e.preventDefault();
+                  console.log(e.currentTarget);
                   await deleteInvoiceAction(new FormData(e.currentTarget));
                   setIsDialogOpen(false);
-                  router.push('/invoices');
                 }}
               >
                 <input type="hidden" name="id" value={invoiceData.id} />
