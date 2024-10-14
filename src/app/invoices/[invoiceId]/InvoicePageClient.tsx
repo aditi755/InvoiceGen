@@ -89,7 +89,10 @@ function InvoicePageClient({ invoiceData }: { invoiceData: InvoiceData }) {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             {AVAILABLE_STATUSES.map((status) => (
-              <DropdownMenuItem key={status.id} onSelect={(e) => handleStatusUpdate(e, status.id)}>
+              <DropdownMenuItem 
+                key={status.id} 
+                onSelect={(e) => handleStatusUpdate(e as unknown as React.MouseEvent, status.id)} // Cast to unknown first
+              >
                 {status.label}
               </DropdownMenuItem>
             ))}
