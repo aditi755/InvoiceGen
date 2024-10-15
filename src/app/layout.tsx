@@ -4,7 +4,7 @@ import {
   ClerkProvider,
 } from '@clerk/nextjs'
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+
 import { Lato } from "next/font/google";
 
 
@@ -33,7 +33,7 @@ export default function RootLayout({
       >
         <Header />
         {children}
-        <Footer />
+       
       </body>
     </html>
     </ClerkProvider>
