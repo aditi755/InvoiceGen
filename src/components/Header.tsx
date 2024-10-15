@@ -15,7 +15,7 @@ const Header = () => {
         <div className="flex justify-between items-center gap-4">
           <div className="flex items-center gap-4">
             <p className="font-bold">
-              <Link href="/dashboard">Invoicipedia</Link>
+              <Link href="/dashboard">InvoiceGen</Link>
             </p>
             <span className="text-slate-300">/</span>
             <SignedIn>

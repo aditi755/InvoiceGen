@@ -6,16 +6,13 @@ import {
 } from '@clerk/nextjs'
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Lato } from "next/font/google";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+
+
+const lato = Lato({ 
+  subsets: ["latin"], 
+  weight: ["100", "300", "400", "700", "900"]
 });
 
 export const metadata: Metadata = {
@@ -33,7 +30,7 @@ export default function RootLayout({
     <html lang="en">
    
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen grid grid-rows-[auto_1fr_auto]`}
+        className={`${lato.className} antialiased min-h-screen grid grid-rows-[auto_1fr_auto]`}
       >
         <Header />
         {children}

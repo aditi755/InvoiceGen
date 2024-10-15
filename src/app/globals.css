@@ -76,3 +76,9 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.gradient-text {
+  background: linear-gradient(90deg, rgb(217, 97, 217), rgba(215, 133, 147, 0.738)); /* Gradient from purple to pink */
+  -webkit-background-clip: text; /* For Safari */
+  -webkit-text-fill-color: transparent; /* Make text transparent */
+}
