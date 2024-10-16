@@ -23,6 +23,9 @@ import { updateStatusAction, deleteInvoiceAction } from '@/app/actions';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
+import Container from '@/components/Container';
+//import { payInvoiceAction } from "@/app/actions"; // Adjust the import path as necessary
+
 
 // Update the interface
 interface InvoiceData {
@@ -50,8 +53,28 @@ function InvoicePageClient({ invoiceData }: { invoiceData: InvoiceData }) {
     router.refresh();
   };
 
+
+  // async function PayInvoiceButton ({ invoiceId }: { invoiceId: number }) { // Specify the type of invoiceId
+  //   // const handlePayInvoice = async () => {
+  //     const formData = new FormData();
+  //     formData.append("invoiceId", invoiceId.toString()); // Convert invoiceId to string
+  
+  //     try {
+  //       const result = await payInvoiceAction(formData);
+  //       if (result.success) {
+  //         console.log("Payment initiated:", result.paymentId);
+  //       } else {
+  //         console.error("Payment failed:");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error initiating payment:", error);
+  //     }
+  // //};
+  // }
+
   return (
-    <main className="flex flex-col justify-center h-full text-center gap-6 max-w-5xl mx-auto my-12">  
+    <Container className="max-w-4xl h-screen mx-12 sm:mx-26 lg:mx-42 xl:mx-72">
+    <main className="max-h-screen flex flex-col gap-6 max-w-6xl mx-auto my-12">  
       <h1 className="flex items-center gap-4 text-3xl font-semibold">
         Invoice {invoiceData.id}
         <Badge
@@ -68,16 +91,16 @@ function InvoicePageClient({ invoiceData }: { invoiceData: InvoiceData }) {
       </h1>
 
       <div className="flex flex-col justify-between">
-        <h2>Billing Details</h2>
-        <div>
+        <h2 className="font-bold text-2xl ">Billing Details</h2>
+        <div className="flex flex-col gap-2">
+          <p className='mt-4'>Value: ${invoiceData.value / 100}</p>
           <p>Customer: {invoiceData.customer.name}</p>
           <p>Email: {invoiceData.customer.email}</p>
-          <p>Value: ${invoiceData.value / 100}</p>
           <p>Description: {invoiceData.description}</p>
         </div>
 
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger >
             <Button
               className="flex items-center gap-2 mt-4"
               variant="outline"
@@ -87,7 +110,7 @@ function InvoicePageClient({ invoiceData }: { invoiceData: InvoiceData }) {
               <ChevronDown className="w-4 h-auto" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
+          <DropdownMenuContent className="mr-[800px]">
             {AVAILABLE_STATUSES.map((status) => (
               <DropdownMenuItem 
                 key={status.id} 
@@ -100,8 +123,8 @@ function InvoicePageClient({ invoiceData }: { invoiceData: InvoiceData }) {
         </DropdownMenu>
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button variant="outline" className="mt-4">
+          <DialogTrigger>
+            <Button variant="outline" className="mt-4 mr-[900px]">
               <Trash2 className="w-4 h-4 mr-2" />
               Delete Invoice
             </Button>
@@ -139,8 +162,16 @@ function InvoicePageClient({ invoiceData }: { invoiceData: InvoiceData }) {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+
+        {/* <button onClick={() => PayInvoiceButton({ invoiceId: invoiceData.id })}>
+          Pay Invoice
+        </button> */}
       </div> 
+
+
     </main>
+    </Container >
   );
 }
 

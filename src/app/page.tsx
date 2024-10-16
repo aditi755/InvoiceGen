@@ -22,7 +22,6 @@ export default function Home() {
      <Link href="/dashboard">Sign In</Link>
       </Button>
 
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10  mx-auto mb-20 mt-10 px-2 md:px-8">
       <div className="bg-white p-5 rounded-lg shadow border-2 border-purple-400">
         <h2 className="text-black font-bold">Customizable Templates</h2>

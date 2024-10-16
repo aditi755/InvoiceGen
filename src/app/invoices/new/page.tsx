@@ -38,7 +38,7 @@ export default function NewInvoicePage() {
 
   return (
     // <main className="flex flex-col gap-6 max-w-5xl  my-12">  
-    <Container className="max-w-5xl mx-12 sm:mx-26 lg:mx-42 xl:mx-72">
+    <Container className="max-w-5xl  h-screen mx-12 sm:mx-26 lg:mx-42 xl:mx-72">
       <div className="flex justify-between">
         <h1 className="text-3xl font-semibold">Create Invoice</h1> 
       </div> 

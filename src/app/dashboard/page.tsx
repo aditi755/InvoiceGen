@@ -200,7 +200,7 @@ export default async function Home() {
   });
 
   return (
-    <main className="h-full">
+    <main className="h-screen">
       <Container>
         <div className="flex justify-between mb-6">
           <h1 className="text-3xl font-semibold">Invoices</h1>
