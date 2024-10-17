@@ -10,8 +10,7 @@ export default function Home() {
  
  
     <p className="hidden md:block text-center mx-auto md:max-w-2xl">
-    We create invoice management solutions that drive efficiency and growth. With beautifully designed interfaces and powerful features, Invoicegen simplifies your billing process, allowing you to focus on what truly matters—your business. Our platform is the perfect foundation for
-    <span className="mx-auto" > managing your invoices seamlessly and effectively.</span>
+    We create invoice management solutions that drive efficiency and growth. With beautifully designed interfaces and powerful features, Invoicegen simplifies your billing process, allowing you to focus on your business. 
     </p>
 
     <p className="md:hidden text-center mx-auto  max-w-sm ">

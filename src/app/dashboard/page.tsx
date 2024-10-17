@@ -269,7 +269,7 @@ export default async function Home() {
                       href={`/invoices/${result.id}`}
                       className="block p-4 font-semibold"
                     >
-                      ${(result.value / 100).toFixed(2)}
+                      ₹{(result.value / 100).toFixed(2)}
                     </Link>
                   </TableCell>
                 </TableRow>

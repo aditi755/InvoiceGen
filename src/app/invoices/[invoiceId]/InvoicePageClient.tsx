@@ -24,7 +24,7 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import Container from '@/components/Container';
-//import { payInvoiceAction } from "@/app/actions"; // Adjust the import path as necessary
+import { payInvoiceAction } from "@/app/actions"; // Adjust the import path as necessary
 
 
 // Update the interface
@@ -38,6 +38,18 @@ interface InvoiceData {
     email: string;
   };
 }
+
+// Update the type definition for the result
+type PayInvoiceResult = {
+  success: boolean;
+  data?: {
+    instrumentResponse: {
+      redirectInfo: {
+        url: string;
+      };
+    };
+  };
+};
 
 function InvoicePageClient({ invoiceData }: { invoiceData: InvoiceData }) {
   const router = useRouter();
@@ -54,23 +66,25 @@ function InvoicePageClient({ invoiceData }: { invoiceData: InvoiceData }) {
   };
 
 
-  // async function PayInvoiceButton ({ invoiceId }: { invoiceId: number }) { // Specify the type of invoiceId
-  //   // const handlePayInvoice = async () => {
-  //     const formData = new FormData();
-  //     formData.append("invoiceId", invoiceId.toString()); // Convert invoiceId to string
-  
-  //     try {
-  //       const result = await payInvoiceAction(formData);
-  //       if (result.success) {
-  //         console.log("Payment initiated:", result.paymentId);
-  //       } else {
-  //         console.error("Payment failed:");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error initiating payment:", error);
-  //     }
-  // //};
-  // }
+  async function PayInvoiceButton({ invoiceId, transactionId }: { invoiceId: number; transactionId: string }) {
+    const formData = new FormData();
+    formData.append("transactionId", transactionId);
+    formData.append("invoiceId", invoiceId.toString());
+    
+    try {
+      const result: PayInvoiceResult = await payInvoiceAction(formData);
+      console.log("Payment result:", result); // Log the entire result object
+      if (result.success && result.data) { // Check if result.data exists
+        const redirectUrl = result.data.instrumentResponse.redirectInfo.url; 
+        console.log("Payment initiated:", redirectUrl);
+        window.location.href = redirectUrl; // Redirect to the PhonePe checkout page
+      } else {
+        console.error("Payment failed:", result);
+      }
+    } catch (error) {
+      console.error("Error initiating payment:", error);
+    }
+  }
 
   return (
     <Container className="max-w-4xl h-screen mx-12 sm:mx-26 lg:mx-42 xl:mx-72">
@@ -99,6 +113,8 @@ function InvoicePageClient({ invoiceData }: { invoiceData: InvoiceData }) {
           <p>Description: {invoiceData.description}</p>
         </div>
 
+
+       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center max-w-[500px] mt-10">
         <DropdownMenu>
           <DropdownMenuTrigger >
             <Button
@@ -110,7 +126,7 @@ function InvoicePageClient({ invoiceData }: { invoiceData: InvoiceData }) {
               <ChevronDown className="w-4 h-auto" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="mr-[800px]">
+          <DropdownMenuContent className=" ">
             {AVAILABLE_STATUSES.map((status) => (
               <DropdownMenuItem 
                 key={status.id} 
@@ -124,7 +140,7 @@ function InvoicePageClient({ invoiceData }: { invoiceData: InvoiceData }) {
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger>
-            <Button variant="outline" className="mt-4 mr-[900px]">
+            <Button variant="outline" className="mt-4">
               <Trash2 className="w-4 h-4 mr-2" />
               Delete Invoice
             </Button>
@@ -164,12 +180,15 @@ function InvoicePageClient({ invoiceData }: { invoiceData: InvoiceData }) {
         </Dialog>
 
 
-        {/* <button onClick={() => PayInvoiceButton({ invoiceId: invoiceData.id })}>
+        <Button className="bg-pink-500 mt-4" onClick={() => {
+          const transactionId = 'T' + Date.now(); // Replace with actual transaction ID generation logic
+          PayInvoiceButton({ invoiceId: invoiceData.id, transactionId });
+        }}>
           Pay Invoice
-        </button> */}
-      </div> 
+        </Button>
+        </div>
 
-
+      </div>
     </main>
     </Container >
   );

@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import { and, eq, isNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-//import { initiatePayment } from "./payment";
+import { initiatePayment } from "./payment";
 
 export async function createAction(formData: FormData) {
   const { userId, orgId } = auth();
@@ -149,42 +149,38 @@ export async function deleteInvoiceAction(formData: FormData) {
   redirect("/dashboard");
 }
 
-// export async function payInvoiceAction(formData: FormData) {
-//   const { userId } = auth();
-//   if (!userId) {
-//     throw new Error("User not authenticated");
-//   }
+export async function payInvoiceAction(formData: FormData) {
+  const { userId } = auth();
+  if (!userId) {
+    throw new Error("User not authenticated");
+  }
 
-//   const invoiceId = formData.get("invoiceId") as string;
+  const invoiceId = formData.get("invoiceId") as string;
+  const transactionId = formData.get("transactionId") as string; // Get the transaction ID from form data
 
-//   // Fetch the invoice to get the value
-//   const invoice = await db
-//     .select()
-//     .from(Invoices)
-//     .where(eq(Invoices.id, Number.parseInt(invoiceId)))
-//     .execute();
+  // Fetch the invoice to get the value
+  const invoice = await db
+    .select()
+    .from(Invoices)
+    .where(eq(Invoices.id, Number.parseInt(invoiceId)))
+    .execute();
 
-//   const invoiceData = invoice[0]; // Access the first element of the array
-//   if (!invoiceData) {
-//     throw new Error("Invoice not found");
-//   }
+  const invoiceData = invoice[0]; // Access the first element of the array
+  if (!invoiceData) {
+    throw new Error("Invoice not found");
+  }
 
-//   const amount = invoiceData.value / 100; // Convert back to original amount
+  const amount = invoiceData.value / 100; // Convert back to original amount
 
-//   try {
-//     const paymentResponse = await initiatePayment(amount);
-//     if (paymentResponse.success) {
-//       console.log(`Payment initiated successfully: ${paymentResponse.paymentId}`);
-//       // Optionally, update the invoice status or handle post-payment logic here
-//       return { success: true, paymentId: paymentResponse.paymentId };
-//     } else {
-//       throw new Error("Payment initiation failed");
-//     }
-//   } catch (error) {
-//     console.error("Payment error:", error);
-//     throw new Error("Payment initiation failed");
-//   }
-// }
+  try {
+    const paymentResponse = await initiatePayment(amount, transactionId); // Pass the transaction ID
+    console.log("Payment response:", paymentResponse); 
+    return paymentResponse; // Return the full response from the payment API
+  } catch (error) {
+    console.error("Payment error:", error);
+    throw new Error("Payment initiation failed");
+  }
+}
 
 
 // export async function updateStatusAction(formData: FormData) {
