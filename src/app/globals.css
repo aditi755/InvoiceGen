@@ -82,3 +82,8 @@ body {
   -webkit-background-clip: text; /* For Safari */
   -webkit-text-fill-color: transparent; /* Make text transparent */
 }
+
+.gradient-bg {
+  background: linear-gradient(to bottom, #ffffff 0%, #fff0f5 100%);
+}
+

@@ -4,7 +4,6 @@ import {
   ClerkProvider,
 } from '@clerk/nextjs'
 import Header from "@/components/Header";
-
 import { Lato } from "next/font/google";
 
 

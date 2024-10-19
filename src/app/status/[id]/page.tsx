@@ -36,10 +36,10 @@ const StatusPage = ({ params }: { params: { id: string } }) => {
     };
 
     checkPaymentStatus();
-  }, [id, router]); // Include router in the dependency array
+  }, [id, router]); 
 
   if (loading) {
-    return <div>Loading...</div>; // Show a loading state while checking
+    return <div>Loading...</div>; 
   }
 
   return (

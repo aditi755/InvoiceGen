@@ -2,8 +2,8 @@
 "use server";
 
 const PHONEPE_API_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox";
-const MERCHANT_ID = "PGTESTPAYUAT86"; // Replace with your actual Merchant ID  PGTESTPAYUAT86
-const SALT_KEY = "96434309-7796-489d-8924-ab56988a6076"; // Replace with your actual Salt Key  96434309-7796-489d-8924-ab56988a6076
+const MERCHANT_ID = "PGTESTPAYUAT86"; // Replace with your actual Merchant ID 
+const SALT_KEY = "96434309-7796-489d-8924-ab56988a6076"; // Replace with your actual Salt Key 
 
 import { createHash } from 'crypto'; 
 import axios from 'axios'; 
@@ -28,7 +28,7 @@ export async function initiatePayment(amount: number, transactionId: string) {
     const payloadMain = Buffer.from(payload).toString('base64');
     const string = payloadMain + '/pg/v1/pay' + SALT_KEY;
     const sha256 = createHash('sha256').update(string).digest('hex');
-    const checksum = sha256 + '###' + 1; // Ensure keyIndex is correct
+    const checksum = sha256 + '###' + 1; 
 
     const response = await axios.post(`${PHONEPE_API_URL}/pg/v1/pay`, {
       request: payloadMain
@@ -43,7 +43,7 @@ export async function initiatePayment(amount: number, transactionId: string) {
     const responseData = response.data;
     console.log("RESPONSE DATA FROM PAYMNEY IS",responseData);
     console.log(responseData.data.instrumentResponse.redirectInfo)
-    return responseData; // Ensure this includes the redirect URL
+    return responseData; 
   } catch (error) {
     console.error("Payment error:", error);
     throw new Error("Payment initiation failed: " + error);
@@ -52,7 +52,7 @@ export async function initiatePayment(amount: number, transactionId: string) {
 
 // Payment status handling function
 export async function handlePaymentStatus(merchantTransactionId: string) {
-  const merchantId = MERCHANT_ID; // Use the defined merchant ID
+  const merchantId = MERCHANT_ID; 
 
   const keyIndex = 1;
   const string = `/pg/v1/status/${merchantId}/${merchantTransactionId}` + SALT_KEY;
