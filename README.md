@@ -22,6 +22,19 @@
 - **Clerk**: Authentication provider for social logins and multi-factor authentication.
 - **PhonePe**: Payment gateway integration for handling invoice payments.
 
+## Demo
+
+![Screenshot (121)](https://github.com/user-attachments/assets/0efc5567-9296-49bd-bce1-9e6845771f6c)
+
+![Screenshot (122)](https://github.com/user-attachments/assets/0355f230-6d03-488c-a492-d286a0cb5591)
+
+![Screenshot (125)](https://github.com/user-attachments/assets/f9d06fc7-f4b2-4b18-a21e-8b4d890dae07)
+
+![Screenshot (123)](https://github.com/user-attachments/assets/e5a1b185-3db6-4efd-8e10-2638797826a0)
+
+![Screenshot (124)](https://github.com/user-attachments/assets/31ad2cf6-d907-41ce-b590-79126d6b2a7a)
+
+
 ## Setup Instructions
 
 1. Clone the repository:
