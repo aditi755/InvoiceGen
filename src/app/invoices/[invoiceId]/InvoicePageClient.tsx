@@ -107,7 +107,7 @@ function InvoicePageClient({ invoiceData }: { invoiceData: InvoiceData }) {
       <div className="flex flex-col justify-between">
         <h2 className="font-bold text-2xl ">Billing Details</h2>
         <div className="flex flex-col gap-2">
-          <p className='mt-4'>Value: ${invoiceData.value / 100}</p>
+          <p className='mt-4'>Value: ₹{invoiceData.value / 100}</p>
           <p>Customer: {invoiceData.customer.name}</p>
           <p>Email: {invoiceData.customer.email}</p>
           <p>Description: {invoiceData.description}</p>
