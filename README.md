@@ -2,6 +2,8 @@
 
 **InvoiceGen** is a full-featured **Invoice Management System** built with modern web technologies like **Next.js 14**, **TypeScript**, **PostgreSQL**, and **Shadcn UI**. This application enables users to create, track, and manage their invoices in various states such as **paid**, **void**, and **open**. It also integrates with **PhonePe** to provide seamless payment functionality, allowing users to monitor the status of each invoice after payment.
 
+Project link: [InvoiceGen](https://invoice-gen-ashy.vercel.app/)
+
 ## Features
 
 - **Invoice Tracking**: Track and manage invoices in multiple states (Paid, Void, Open, Uncollectible).
